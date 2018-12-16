@@ -50,3 +50,42 @@ class User(models.Model):
     objects = UserManager()
     def __str__(self):
         return first_name + " " + last_name
+
+#GAMES
+class Week(models.Model):
+    week = models.PositiveIntegerField()
+    dates_from = models.DateTimeField()
+    dates_to = models.DateTimeField()
+
+
+class Game(models.Model):
+    matchup = models.CharField(max_length=100)
+    opp1 = models.CharField(max_length=50)
+    opp2 = models.CharField(max_length=50)
+    team_picked = models.CharField(max_length=50)
+    difference = models.DecimalField(max_digits=20, decimal_places=2)
+
+#PLANS 
+class Plans(models.Model):
+    PLANS = (
+        (1, "Pro"),
+        (2, "Platinum")
+        (3, "Pick of the week")
+    )
+    price =  models.DecimalField(decimal_places=2, max_digits=20)
+    level = models.CharField(choices=PLANS, max_length=20, default=1)
+    desc = models.TextField()
+
+class Cart(models.Model):
+    plans = models.OneToOneField(Plans, on_delete=models.DO_NOTHING)
+    total = models.DecimalField(max_digits=20, decimal_places=2)
+    added_on = models.DateTimeField(auto_now_add=True)
+
+    def get_price(self):
+        return self.plans.price
+
+    def get_total(self):
+        return self.plans.price
+
+    def get_plan_level(self):
+        return self.plans.level.choices[1]
