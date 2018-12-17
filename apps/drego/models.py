@@ -64,12 +64,13 @@ class Game(models.Model):
     opp2 = models.CharField(max_length=50)
     team_picked = models.CharField(max_length=50)
     difference = models.DecimalField(max_digits=20, decimal_places=2)
+    week = models.ForeignKey(Week, on_delete=models.CASCADE)
 
 #PLANS 
-class Plans(models.Model):
+class Plan(models.Model):
     PLANS = (
         (1, "Pro"),
-        (2, "Platinum")
+        (2, "Platinum"),
         (3, "Pick of the week")
     )
     price =  models.DecimalField(decimal_places=2, max_digits=20)
@@ -77,7 +78,7 @@ class Plans(models.Model):
     desc = models.TextField()
 
 class Cart(models.Model):
-    plans = models.OneToOneField(Plans, on_delete=models.DO_NOTHING)
+    plans = models.OneToOneField(Plan, on_delete=models.DO_NOTHING)
     total = models.DecimalField(max_digits=20, decimal_places=2)
     added_on = models.DateTimeField(auto_now_add=True)
 

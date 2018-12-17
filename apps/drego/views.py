@@ -74,3 +74,10 @@ def single_game(request, week_id, game_id):
         "game": game,
     }
     return render(request, 'drego/single-game.html', context)
+
+def plans(request):
+    plans = Plan.objects.all()
+    context = {
+        "plans": plans
+    }
+    return render(request, 'drego/plans.html', context)
