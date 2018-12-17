@@ -1,5 +1,9 @@
 from django.shortcuts import render
-
+from django.contrib import messages
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from .models import *
+import bcrypt
 def index(request):
     context = {}
     return render(request, 'drego/index.html', context)
@@ -45,3 +49,28 @@ def register_page(request):
 
 def login_page(request):
     return render(request, 'drego/login.html')
+
+def weeks(request):
+    weeks = Week.objects.all()
+    context = {
+        "weeks": weeks
+    }
+    return render(request, 'drego/weeks.html', context)
+
+def games(request, week_id):
+    week = Week.objects.get(id=week_id)
+    games = Game.objects.filter(week=week)
+    context = {
+        "week": week,
+        "games": games,
+    }
+    return render(request, 'drego/games.html', context)
+
+def single_game(request, week_id, game_id):
+    week = Week.objects.get(id=week_id)
+    game = Game.objects.get(id=game_id)
+    context = {
+        "week": week,
+        "game": game,
+    }
+    return render(request, 'drego/single-game.html', context)
